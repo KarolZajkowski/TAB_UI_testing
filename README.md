@@ -5,8 +5,7 @@
 _**Envoronment**_
   > * Install Python 3.9.1 (3+) and add to environment variable
   > * Install JAVA JDK and add to your environment variable
-  > * If Selenium Grid will be used – be sure that you have **chrome client** web browser (webdriver inside package)
-  > * If Selenium Grid will be used – be sure that you have **firefox client** web browser (webdriver inside package)
+  > * Be sure that you have **client** web browser for selected webdriver
   > * Install allure: https://docs.qameta.io/allure/
   
 
