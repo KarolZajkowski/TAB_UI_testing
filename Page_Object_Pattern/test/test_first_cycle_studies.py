@@ -43,12 +43,3 @@ class TestFirstCycleStudies:
             assert parsed_element[1] is not None
             assert parsed_element[2] is not None
 
-        # elements = search_first_cycle_studies.get_element_from_baner()
-        # assert elements
-        # i = 1
-        # for studies in elements:
-        #     studies_param = search_first_cycle_studies.parsed_element_and_make_screen(studies, i)
-        #     assert studies_param[0] is not None
-        #     assert studies_param[1] is not None
-        #     assert studies_param[2] is not None
-        #     i += 1
