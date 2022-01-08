@@ -35,7 +35,7 @@ def setup_server_and_node():
     underTest.main()
 
 
-@pytest.fixture(params=['chrome', 'firefox', 'chrome'])
+@pytest.fixture(params=['firefox', 'chrome', 'firefox', 'chrome'])
 def setup(request, check_connection, setup_server_and_node):
     """
     :param request: remote webdrver >> in 2 way - remote (selenium grid & local DriverManager)

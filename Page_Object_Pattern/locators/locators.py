@@ -18,7 +18,11 @@ class FirstCycleStudiesLocators:
 
     table_banner_html = ('div', {'class': 'direction-title-wrap studies_i wsb'})
 
+    script_scroll_offset_Height = "arguments[0].scrollIntoView(true); window.scrollBy(0, -arguments[1].offsetHeight);"
+    script_scroll_window_Height = "arguments[0].scrollIntoView(true); window.scrollBy(0, -window.innerHeight / 2);"
     script_scroll_locator = "arguments[0].scrollIntoView(true);"
+    script_scroll_IntoView = "arguments[0].scrollIntoView();"
+    script_scrollBy = "window.scrollBy(0, arguments[0]);"
     script_click_locator = "argument[0].click();"
 
     image_locator = 'img'

@@ -41,7 +41,7 @@ class FirstCycleStudies:
         self.sort_selector = FirstCycleStudiesLocators.sort_selector_xpath
         self.table_banner = FirstCycleStudiesLocators.table_banner_html
 
-        self.script_scroll = FirstCycleStudiesLocators.script_scroll_locator
+        self.script_scroll_window_Height = FirstCycleStudiesLocators.script_scroll_window_Height
         self.script_click = FirstCycleStudiesLocators.script_click_locator
 
         self.image_locator = FirstCycleStudiesLocators.image_locator
@@ -129,17 +129,20 @@ class FirstCycleStudies:
         checkbox_wroclaw = self.driver.find_element(*self.checkbox_wroclaw_locator)
 
         try:
-            self.driver.execute_script(self.script_scroll, checkbox_wroclaw)  # firefox
+            self.driver.execute_script(self.script_scroll_window_Height, checkbox_wroclaw)  # firefox
             time.sleep(2)
-            self.driver.execute_script(self.script_click, checkbox_wroclaw)  # firefox
+            # self.driver.execute_script(self.script_click, checkbox_wroclaw)  # firefox
+            checkbox_wroclaw.click()  # firefox
 
         except ElementClickInterceptedException:  # popup shows up
             self.wait.until(EC.visibility_of_any_elements_located(self.popup_call_to_me_later))
             self.driver.find_element(*self.popup_call_to_me_later).send_keys(Keys.ESCAPE)
 
-            self.driver.execute_script(self.script_scroll, checkbox_wroclaw)  # firefox
+            self.driver.execute_script(self.script_scroll_window_Height, checkbox_wroclaw)  # firefox
+            time.sleep(2)
             if checkbox_wroclaw.is_selected():
-                self.driver.execute_script(self.script_click, checkbox_wroclaw)  # firefox
+                checkbox_wroclaw.click()
+                # checkbox_wroclaw(self.script_click, checkbox_wroclaw)  # firefox
 
         finally:
             allure.attach(self.driver.get_screenshot_as_png(), name="checkbox_wroclaw",
@@ -150,17 +153,20 @@ class FirstCycleStudies:
         checkbox_inzynierskie = self.driver.find_element(*self.checkbox_inzynierskie_locator)
 
         try:
-            self.driver.execute_script(self.script_scroll, checkbox_inzynierskie)  # firefox
+            self.driver.execute_script(self.script_scroll_window_Height, checkbox_inzynierskie)  # firefox
             time.sleep(2)
-            self.driver.execute_script(self.script_click, checkbox_inzynierskie)  # firefox
+            # self.driver.execute_script(self.script_click, checkbox_inzynierskie)  # firefox
+            checkbox_inzynierskie.click()  # firefox
 
         except ElementClickInterceptedException:  # popup shows up
             self.wait.until(EC.visibility_of_any_elements_located(self.popup_call_to_me_later))
             self.driver.find_element(*self.popup_call_to_me_later).send_keys(Keys.ESCAPE)
 
-            self.driver.execute_script(self.script_scroll, checkbox_inzynierskie)  # firefox
+            self.driver.execute_script(self.script_scroll_window_Height, checkbox_inzynierskie)  # firefox
+            time.sleep(2)
             if checkbox_inzynierskie.is_selected():
-                self.driver.execute_script(self.script_click, checkbox_inzynierskie)  # firefox
+                # self.driver.execute_script(self.script_click, checkbox_inzynierskie)  # firefox
+                checkbox_inzynierskie.click()
 
         finally:
             allure.attach(self.driver.get_screenshot_as_png(), name="checkbox_inzynierskie",
