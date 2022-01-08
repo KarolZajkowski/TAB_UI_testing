@@ -1,0 +1,8 @@
+EnvironmentalRequirements.md.docx
+__pycache__*
+
+/temp_copy
+/venv
+/.pytest_cache
+*.log
+/Page_Object_Pattern/*.log
