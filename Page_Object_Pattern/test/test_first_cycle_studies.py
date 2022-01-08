@@ -36,8 +36,19 @@ class TestFirstCycleStudies:
         assert search_first_cycle_studies.is_sort_selector_displayed()  # sort selector
         assert search_first_cycle_studies.studies_description_bar_xpath(studies_wroclaw_len)  # len of studies
 
+        # checking image, title and city
         elements = search_first_cycle_studies.parsed_element_and_make_screen()
         for parsed_element in elements:
             assert parsed_element[0] is not None
             assert parsed_element[1] is not None
             assert parsed_element[2] is not None
+
+        # elements = search_first_cycle_studies.get_element_from_baner()
+        # assert elements
+        # i = 1
+        # for studies in elements:
+        #     studies_param = search_first_cycle_studies.parsed_element_and_make_screen(studies, i)
+        #     assert studies_param[0] is not None
+        #     assert studies_param[1] is not None
+        #     assert studies_param[2] is not None
+        #     i += 1

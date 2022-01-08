@@ -18,6 +18,12 @@ class FirstCycleStudiesLocators:
 
     table_banner_html = ('div', {'class': 'direction-title-wrap studies_i wsb'})
 
+    script_scroll_locator = "arguments[0].scrollIntoView(true);"
+    script_click_locator = "argument[0].click();"
+
+    image_locator = 'img'
+    title_locator = ('span', {'class': 'title'})
+    city_locator = ('div', {'class': 'cities'})
 
 
 

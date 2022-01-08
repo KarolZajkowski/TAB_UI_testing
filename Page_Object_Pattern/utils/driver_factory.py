@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.firefox.service import Service as FirefoxService
-"""" Karol Zajkowski """
+
 
 LAUNCH_DRIVER = 'remote'  # 'local' >> use webdriver_manager :: 'remote' >> use webdriver.Remote - for grid
 

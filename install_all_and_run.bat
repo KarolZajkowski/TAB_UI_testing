@@ -52,10 +52,10 @@ python -m pip install -r requirements.txt
 cd Page_Object_Pattern
 
 echo *** test with allure
-pytest --alluredir=%cd%\Page_Object_Pattern\report
+pytest --alluredir=%cd%\report
 
 echo *** pytest done 
 echo *** launch allure server
-allure serve %cd%\Page_Object_Pattern\report
+allure serve %cd%\report
 
 pause

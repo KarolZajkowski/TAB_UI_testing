@@ -16,76 +16,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException,
     StaleElementReferenceException, ElementClickInterceptedException, MoveTargetOutOfBoundsException
 
 from Page_Object_Pattern.locators.locators import FirstCycleStudiesLocators
+from Page_Object_Pattern.pages.reuse_function import xpath_soup, DecoCallToMeNotification
 """" Karol Zajkowski """
-
-
-class DecoCallToMeNotification:
-    """ reuse decorator for skipp 'Call to me later' """
-    def __init__(self, func):
-        self.func = func
-
-    def __call__(self, **kwargs):
-        """
-        :param func: function to check with possible notification
-        :return: Method just check and skipp 'call-to-me-later' notification if will show up
-        and Finally return main function
-        """
-        try:
-            print("\t>>> check condition with until segment")
-            wait = WebDriverWait(kwargs['driver'], 3, 0.5,
-                                 ignored_exceptions=(NoSuchElementException, StaleElementReferenceException))
-            wait.until(
-                EC.visibility_of_any_elements_located(kwargs['locator']))
-            time.sleep(1)
-            kwargs['driver'].find_element(*kwargs['locator']).send_keys(Keys.ESCAPE)
-
-        except TimeoutException:
-            print('Popup not show - skipped')
-
-        finally:
-            # find xpath
-            kwargs['find_a_screen_xpath'] = self.xpath_soup(kwargs['studies'])
-            self.func(**kwargs)
-
-    @staticmethod
-    def xpath_soup(element):
-        # type: (typing.Union[bs4.element.Tag, bs4.element.NavigableString]) -> str
-        """
-        Generate xpath from BeautifulSoup4 element.
-        :param element: BeautifulSoup4 element.
-        :type element: bs4.element.Tag or bs4.element.NavigableString
-        :return: xpath as string
-        :rtype: str
-        :from https://gist.github.com/ergoithz/6cf043e3fdedd1b94fcf
-        Usage
-        ----- /
-        `>>> import bs4 /
-        `>>> html = (
-        ...     '<html><head><title>title</title></head>'
-        ...     '<body><p>p <i>1</i></p><p>p <i>2</i></p></body></html>'
-        ...     )
-        `>>> soup = bs4.BeautifulSoup(html, 'html.parser')
-        `>>> xpath_soup(soup.html.body.p.i)
-        '/html/body/p[1]/i'
-        `>>> import bs4
-        `>>> xml = '<doc><elm/><elm/></doc>'
-        `>>> soup = bs4.BeautifulSoup(xml, 'lxml-xml')
-        `>>> xpath_soup(soup.doc.elm.next_sibling)
-        '/doc/elm[2]'
-        """
-        components = []
-        child = element if element.name else element.parent
-        for parent in child.parents:  # type: bs4.element.Tag
-            siblings = parent.find_all(child.name, recursive=False)
-            components.append(
-                child.name if 1 == len(siblings) else '%s[%d]' % (
-                    child.name,
-                    next(i for i, s in enumerate(siblings, 1) if s is child)
-                    )
-                )
-            child = parent
-        components.reverse()
-        return '/%s' % '/'.join(components)
 
 
 class FirstCycleStudies:
@@ -108,6 +40,13 @@ class FirstCycleStudies:
         self.zapisz_sie_online = FirstCycleStudiesLocators.zapisz_sie_online_xpath
         self.sort_selector = FirstCycleStudiesLocators.sort_selector_xpath
         self.table_banner = FirstCycleStudiesLocators.table_banner_html
+
+        self.script_scroll = FirstCycleStudiesLocators.script_scroll_locator
+        self.script_click = FirstCycleStudiesLocators.script_click_locator
+
+        self.image_locator = FirstCycleStudiesLocators.image_locator
+        self.title_locator = FirstCycleStudiesLocators.title_locator
+        self.city_locator = FirstCycleStudiesLocators.city_locator
 
     def open_page(self, url):
         self.driver.get(url)
@@ -148,7 +87,7 @@ class FirstCycleStudies:
 
         try:
             self.action.move_to_element(checkbox_wroclaw).perform()  # chrome
-            time.sleep(2)
+            time.sleep(1)
             checkbox_wroclaw.click()  # chrome
 
         except ElementClickInterceptedException:  # popup shows up
@@ -190,17 +129,17 @@ class FirstCycleStudies:
         checkbox_wroclaw = self.driver.find_element(*self.checkbox_wroclaw_locator)
 
         try:
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", checkbox_wroclaw)  # firefox
+            self.driver.execute_script(self.script_scroll, checkbox_wroclaw)  # firefox
             time.sleep(2)
-            self.driver.execute_script("argument[0].click();", checkbox_wroclaw)  # firefox
+            self.driver.execute_script(self.script_click, checkbox_wroclaw)  # firefox
 
         except ElementClickInterceptedException:  # popup shows up
             self.wait.until(EC.visibility_of_any_elements_located(self.popup_call_to_me_later))
             self.driver.find_element(*self.popup_call_to_me_later).send_keys(Keys.ESCAPE)
 
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", checkbox_wroclaw)  # firefox
+            self.driver.execute_script(self.script_scroll, checkbox_wroclaw)  # firefox
             if checkbox_wroclaw.is_selected():
-                self.driver.execute_script("argument[0].click();", checkbox_wroclaw)  # firefox
+                self.driver.execute_script(self.script_click, checkbox_wroclaw)  # firefox
 
         finally:
             allure.attach(self.driver.get_screenshot_as_png(), name="checkbox_wroclaw",
@@ -211,17 +150,17 @@ class FirstCycleStudies:
         checkbox_inzynierskie = self.driver.find_element(*self.checkbox_inzynierskie_locator)
 
         try:
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", checkbox_inzynierskie)  # firefox
+            self.driver.execute_script(self.script_scroll, checkbox_inzynierskie)  # firefox
             time.sleep(2)
-            self.driver.execute_script("argument[0].click();", checkbox_inzynierskie)  # firefox
+            self.driver.execute_script(self.script_click, checkbox_inzynierskie)  # firefox
 
         except ElementClickInterceptedException:  # popup shows up
             self.wait.until(EC.visibility_of_any_elements_located(self.popup_call_to_me_later))
             self.driver.find_element(*self.popup_call_to_me_later).send_keys(Keys.ESCAPE)
 
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", checkbox_inzynierskie)  # firefox
+            self.driver.execute_script(self.script_scroll, checkbox_inzynierskie)  # firefox
             if checkbox_inzynierskie.is_selected():
-                self.driver.execute_script("argument[0].click();", checkbox_inzynierskie)  # firefox
+                self.driver.execute_script(self.script_click, checkbox_inzynierskie)  # firefox
 
         finally:
             allure.attach(self.driver.get_screenshot_as_png(), name="checkbox_inzynierskie",
@@ -275,4 +214,46 @@ class FirstCycleStudies:
             _inner_func(driver=self.driver, locator=self.popup_call_to_me_later, studies=studies)
 
         return list_of_elements
+
+    # @allure.step("Get banner table selectors")
+    # def get_element_from_baner(self):
+    #     """ This step check web parcel of 3 elements (image, title, city)"""
+    #     page_html = self.driver.page_source
+    #     parsed_html = BeautifulSoup(page_html, 'html.parser')
+    #     list_of_elements = []
+    #
+    #     for studies in parsed_html.find_all(*self.table_banner):
+    #         list_of_elements.append(studies)
+    #
+    #     return list_of_elements
+    #
+    # # @allure.step("Assertion check banner table")
+    # # def parsed_element_and_make_screen(self, studies, i):
+    # #     # list_of_elements = []
+    # #     try:
+    # #         print("\t>>> check condition with until segment")
+    # #         self.wait.until(
+    # #             EC.visibility_of_any_elements_located(self.popup_call_to_me_later))
+    # #         time.sleep(1)
+    # #         self.driver.find_element(*self.popup_call_to_me_later).send_keys(Keys.ESCAPE)
+    # #
+    # #     except TimeoutException:
+    # #         print('Popup not show - skipped')
+    # #     finally:
+    # #         image = studies.find(self.image_locator)
+    # #         title = studies.find(*self.title_locator)
+    # #         city = studies.find(*self.city_locator)
+    # #
+    # #         find_a_screen_xpath = xpath_soup(studies)
+    # #         picture_locator = self.driver.find_element(By.XPATH, find_a_screen_xpath)
+    # #         try:
+    # #             self.action.move_to_element(picture_locator).perform()
+    # #         except MoveTargetOutOfBoundsException:
+    # #             self.driver.execute_script(self.script_scroll, picture_locator)  # firefox
+    # #
+    # #         # list_of_elements.append((image, title, city))
+    # #         allure.attach(self.driver.get_screenshot_as_png(), name=f"banner_{i}",
+    # #                       attachment_type=AttachmentType.PNG)
+    # #
+    # #     return image, title, city
 
